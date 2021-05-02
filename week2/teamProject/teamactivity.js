@@ -22,10 +22,7 @@ function squish(){
     let number2 = document.querySelector("#sums2").value;
     let sum = Number(number1) + Number(number2);
     document.querySelector("#out").textContent = sum;
-    
 }
-
-
 
 let button = document.querySelector('#texting');
 button.addEventListener('click', addNum);
