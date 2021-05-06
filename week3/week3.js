@@ -119,7 +119,7 @@ button.addEventListener("click", () => {
     };
     students.push(newStudent);
 
-    localStorage.setItem('students', JSON.stringify(students));
+    localStorage.setItem('students', JSON.stringify(students))
 
     displayStudents();
 });
