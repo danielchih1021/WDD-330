@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe board</title>
+    <link href="teamactivity.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Team Activivty Week 4</h1>
+    </header>
+
+    <nav>
+        <button onclick="myFunction()" class="dropbtn">☰ Menu</button>
+         <ul id="myDropdown" class="dropdown-content">
+             <li>
+
+             </li>
+         </ul>                   
+    </nav>
+
+<table class="board">
+    <tr>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+    </tr>
+    <tr>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td> 
+    </tr>
+    <tr>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td>
+        <td ontouchend="addXOrO(event)">anything honestly</td> 
+    </tr>
+</table>
+<button id="clear" ontouchend="clearing()">clear</button>
+
+<script>
+    let tds = document.querySelectorAll('td');
+    console.log(tds);
+    let player1 = true;
+    let button = document.querySelector('#clear');
+
+    function addXOrO(event) {
+        
+        if(player1){
+            event.target.innerHTML = 'X';
+            player1 = false; 
+        }
+        else{
+            event.target.innerHTML = 'O';
+            player1 = true; 
+        }
+    }
+    
+    function clearing() {
+        for (let i = 0; i< tds.length; i++){
+            tds[i].textContent = "";
+            tds[i].innerHTML = "";
+            tds[i].innerText = "";
+        }}
+</script>
