@@ -9,7 +9,7 @@ if(localStorage.getItem('toDoList')){
 displayTodos(toDoList);
 
 function displayTodos(todos) {
-    let ul = document.querySelector('ul');
+    let ul = document.querySelector('ul'); 
     ul.innerHTML="";
     todos.forEach((todoItem)=>{
         ul.innerHTML += 
@@ -87,7 +87,7 @@ add.addEventListener("touchend", (e) => {
     displayTodos(toDoList);
 });
 
-document.querySelector("#all").addEventListener("touchend", displayTodos(toDoList));
+document.querySelector("#all").addEventListener("touchend", displayTodos(toDoList)); 
 document.querySelector("#active").addEventListener("touchend", displayTodos(toDoList.filter(todo => todo.Completed == false)));
 document.querySelector("#completed").addEventListener("touchend", displayTodos(toDoList.filter(todo => todo.Completed == true)));
 
