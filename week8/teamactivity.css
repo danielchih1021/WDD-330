@@ -2,5 +2,13 @@
     display: none;
 }
 body{
-    border: 1px double black;
+    border: 2px double black;
+}
+h1{
+    text-align: center;
+    color:gold;
+}
+div{
+    margin-top: -22px;
+    background-color: black;
 }
