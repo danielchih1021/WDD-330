@@ -9,6 +9,7 @@ if(localStorage.getItem('toDoList')){
 displayTodos(toDoList);
 
 function displayTodos(todos) {
+    console.log(todos);
     let ul = document.querySelector('ul'); 
     ul.innerHTML="";
     todos.forEach((todoItem)=>{
@@ -31,7 +32,6 @@ function displayTodos(todos) {
                 selectedTodo.Completed = !selectedTodo.Completed;
 
                 localStorage.setItem('toDoList', JSON.stringify(toDoList));
-                console.log(selectedTodo);
                 let countNotCompleted = 0;
                 toDoList.forEach(
                     (toDoListItem) => {
@@ -87,7 +87,15 @@ add.addEventListener("touchend", (e) => {
     displayTodos(toDoList);
 });
 
-document.querySelector("#all").addEventListener("touchend", displayTodos(toDoList)); 
-document.querySelector("#active").addEventListener("touchend", displayTodos(toDoList.filter(todo => todo.Completed == false)));
-document.querySelector("#completed").addEventListener("touchend", displayTodos(toDoList.filter(todo => todo.Completed == true)));
+document.querySelector("#all").addEventListener("touchend", () => {
+    displayTodos(toDoList);
+}); 
+
+document.querySelector("#active").addEventListener("touchend", () => {
+    displayTodos(toDoList.filter(todo => todo.Completed === false));
+});
+
+document.querySelector("#completed").addEventListener("touchend", () => {
+    displayTodos(toDoList.filter(todo => todo.Completed === true));
+});
 
