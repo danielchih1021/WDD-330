@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Project</title>
+    <link rel="stylesheet" href="../stylesheet/index.css">
+  </head>
+  <body>
+    <header>
+        <h2>Chef Next Door</h2>
+    </header>
+    <main>
+      <form>
+        <label for="title">Title</label><br>
+        <input type="text" name="title" id="title"><br>
+        Food Category<br>
+        <input type="radio" id="entre" name="food-category" value="entre">
+        <label for="entre">Entre</label><br>
+        <input type="radio" id="main_dish" name="food-category" value="main_dish">
+        <label for="main_dish">Main Dish</label><br>
+        <input type="radio" id="dessert" name="food-category" value="dessert">
+        <label for="dessert">Dessert</label><br>
+        <div class="ingredient_div">
+          <label for="ingredient">Ingredient</label><br>
+        </div>
+        <input type="text" name="ingredient" id="ingredient">
+        <input type="button" value="Add ingredient" id="ingredient_added_button"><br>
+        <input type="button" value="Nutrition Value"><br>
+        <label for="description">Descriptions</label><br>
+        <textarea id="description" name="description" rows="3" cols="10"></textarea><br>
+        <button type="button">Sell your food!</button>
+      </form>
+      <div class="selection">
+        <h3>Food Selection</h3>
+        <section class="sub_selection">
+
+        </section>
+      </div>
+    </main>
+    <footer>
+    </footer>
+  </body>
+  <script src="../script/index.js" type="module"></script>
+</html>
