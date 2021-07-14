@@ -20,12 +20,12 @@ function displayFood(unsoldFoodArray){
     selection.innerHTML = "";
     let foodPost = "";
     unsoldFoodArray.forEach((fooditem)=>{
-        foodPost = foodPost + fooditem.Title + " \n" + 
-            fooditem.Category + " \n" + 
+        foodPost = foodPost + fooditem.Title + "<br>" 
+            fooditem.Category + "<br>" + 
             fooditem.Description;
         fooditem.Ingredient.forEach((ingredientItem) =>{
             let i = 1;
-            foodPost = foodPost + "Ingredient #" + i + " " + ingredientItem.Name + " serving: " + ingredientItem.Serving + "\n";
+            foodPost = foodPost + "Ingredient #" + i + " " + ingredientItem.Name + " serving: " + ingredientItem.Serving + "<br>";
             i++;
         })
         selection.innerHTML +=
@@ -89,7 +89,7 @@ if (textboxes.length>3){
 }
 
 //Removing all delete ingredient buttons after submitting the food to sell
-// if(document.querySelectorall('input[type="button"][value="Delete Ingredient"]').length>0){
+// if(document.querySelectorall('input[data-id=""]').length>0){
 //     do{
 //         document.querySelectorall('input[type="button"][value="Delete Ingredient"]')[0].remove();
 //     }
@@ -113,18 +113,19 @@ document.querySelector("#ingredient_added_button").addEventListener("touchend", 
         `<input type="text" name="ingredient" class="added_ingredient" value="${added_ingredient}" maxlength="6" size="6" data-id="${ingredient.TimeId}" readonly>
         <input type="text" name="serving" class="added_serving" value="${added_serving}" maxlength="6" size="6" data-id="${ingredient.TimeId}" readonly>
         <input type="button" value="Delete Ingredient" name="delete" class="ingredient_delete_button" data-id="${ingredient.TimeId}"<br>`;
-    document.querySelector("#ingredient").value = "";
+        document.querySelector("#ingredient").value = "";
     document.querySelector("#serving").value = "";
     ingredients.push(ingredient);
     console.log(ingredients);}
-})
 
 //Actions performed after hitting the delete ingredient button
 let delete_ingredient_buttons = document.querySelectorAll('.ingredient_delete_button');
+console.log(delete_ingredient_buttons);
 delete_ingredient_buttons.forEach(
     delete_ingredient_button => {
         delete_ingredient_button.addEventListener('touchend', (e) => {
             let selectedId = e.target.dataset.id;
+            console.log(selectedId);
             for(let i = 0; i<ingredients.length;i++){
                 let selectedIngredient = ingredients.find(ingredient => ingredient.TimeId === parseInt(selectedId));
                 if(selectedIngredient){
@@ -145,6 +146,7 @@ delete_ingredient_buttons.forEach(
             // )
         });
     });
+})
 
 //Fetch API to reference to external API
 const params={
