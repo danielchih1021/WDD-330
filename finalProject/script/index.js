@@ -15,28 +15,47 @@ if(localStorage.getItem('foodList')){
 }
 
 //To display the food available for sale
-function displayFood(unsoldFoods){
+function displayFood(unsoldFoodArray){
     let selection = document.querySelector("section");
     selection.innerHTML = "";
-    foods.forEach((foodItem) => {
-        selection.innerHTML += 
-            `<div class="food">
-                ${foodItem.Title}<br>
-                ${foodItem.Category}<br>
-                ${foodItem.Ingredient}<br>
-                ${foodItem.Description}<br>
-                </div>` 
-        // foodItem.ingredient.forEach((ingredientItem) =>{
-        //     selection.innerHTML +=
-        //         `
-        //         `
+    let foodPost = "";
+    unsoldFoodArray.forEach((fooditem)=>{
+        foodPost = foodPost + {fooditem.Title} + " \n" + 
+            ${fooditem.Category} + " \n" + 
+            ${fooditem.Description};
+        fooditem.Ingredient.forEach((ingredientItem) =>{
+            let i = 1;
+            foodPost = foodPost + "Ingredient #" + i + " " + ingredientItem.Name + " serving: " + ingredientItem.Serving + "\n";
+            i++;
+        })
+        selection.innerHTML +=
+            `<div class="foodSelection" data-id="${fooditem.TimeId}">${foodPost}</div>`;
+        foodPost = ""; 
+    })
+    // foods.forEach((foodItem) => {
+    //     selection.innerHTML += 
+    //         `<div class="food">
+    //             ${foodItem.Title}<br>
+    //             ${foodItem.Category}<br>
+    //             ${foodItem.Description}<br>`;
+    //         foodItem.Ingredient.forEach((ingredientItem) => {
+    //             selection.innerHTML +=
+    //                 `${ingredientItem[0]}<br>
+    //                 ${ingredientItem[1]}<br>`;
+    //         })
+    //         `</div>`;
+        //         <input type = "button" value = "See top 5 nutritional value" name ="nutrition">
+        //         </div>` 
+        //      
+        // //         `
+        // //         `
         // })
         //     // ${foodItem.Ingredient}<br>
         // selection.innerHTML += 
         //     `<div>
         //         ${foodItem.Description}<br>
         //     </div>` 
-    });
+    // });
 }
 
 //Actions performed when clicking the sell your food button
@@ -52,6 +71,9 @@ document.querySelector("button").addEventListener("touchend", () => {
           break;
       }
   }
+  if(title == "" || description == "" || typeof selectedCategory === "undefined" || ingredients === []){
+      alert("Title, food category, ingredient and descriptions are required");
+  } else {
   let food = new Food(title, selectedCategory, ingredients, description, "../finalProject/images/food.jpg");
   ingredients = [];
   foods.push(food);
@@ -59,7 +81,7 @@ document.querySelector("button").addEventListener("touchend", () => {
   localStorage.setItem("foodList", JSON.stringify(foods));
   unsoldFoods = [];
   for (let i=0; i<foods.length;i++){
-      if(foods[i].Sold = false){
+      if(foods[i].Sold == false){
           unsoldFoods.push(foods[i]);
       }
   }
@@ -86,6 +108,7 @@ if (textboxes.length>3){
     while(document.querySelectorAll('input[type="text"]')[3]);
 }
 
+//Removing all delete ingredient buttons after submitting the food to sell
 // if(document.querySelectorall('input[type="button"][value="Delete Ingredient"]').length>0){
 //     do{
 //         document.querySelectorall('input[type="button"][value="Delete Ingredient"]')[0].remove();
@@ -96,27 +119,57 @@ if (textboxes.length>3){
 // console.log(delete_ingredient_buttons);
 
   displayFood(unsoldFoods);
-});
+}});
 
 //Actions performed after clicking the add ingredient button
 document.querySelector("#ingredient_added_button").addEventListener("touchend", () => {
     let added_ingredient = document.querySelector("#ingredient").value;
     let added_serving = document.querySelector("#serving").value;
+    if(added_ingredient == "" || added_serving == ""){
+        alert("Ingredient and serving are both required")
+    }else {
     let ingredient = new Ingredient(added_ingredient, added_serving);
     document.querySelector(".ingredient_div").innerHTML +=
         `<input type="text" name="ingredient" class="added_ingredient" value="${added_ingredient}" maxlength="6" size="6" data-id="${ingredient.TimeId}" readonly>
         <input type="text" name="serving" class="added_serving" value="${added_serving}" maxlength="6" size="6" data-id="${ingredient.TimeId}" readonly>
-        <input type="button" value="Delete Ingredient" class="ingredient_delete_button" data-id="${ingredient.TimeId}"<br>`;
+        <input type="button" value="Delete Ingredient" name="delete" class="ingredient_delete_button" data-id="${ingredient.TimeId}"<br>`;
     document.querySelector("#ingredient").value = "";
     document.querySelector("#serving").value = "";
     ingredients.push(ingredient);
-    console.log(ingredients);
+    console.log(ingredients);}
 })
+
+//Actions performed after hitting the delete ingredient button
+let delete_ingredient_buttons = document.querySelectorAll('.ingredient_delete_button');
+delete_ingredient_buttons.forEach(
+    delete_ingredient_button => {
+        delete_ingredient_button.addEventListener('touchend', (e) => {
+            let selectedId = e.target.dataset.id;
+            for(let i = 0; i<ingredients.length;i++){
+                let selectedIngredient = ingredients.find(ingredient => ingredient.TimeId === parseInt(selectedId));
+                if(selectedIngredient){
+                    console.log(selectedIngredient);
+                }
+            }
+
+            // selectedTodo.Completed = !selectedTodo.Completed;
+
+            // localStorage.setItem('toDoList', JSON.stringify(toDoList));
+            // let countNotCompleted = 0;
+            // toDoList.forEach(
+            //     (toDoListItem) => {
+            //         if (toDoListItem.Completed == false){
+            //             countNotCompleted += 1;
+            //         }
+            //     }
+            // )
+        });
+    });
 
 //Fetch API to reference to external API
 const params={
     api_key: 'TYiTH5rSuMu3C72sXI27po6nP1gAdP0YQcqghQI0',
-    query:'cheddar cheese',
+    query:'egg',
     dataType: ["Survey (FNDDS)"],
     pagesize: 5,
 }
