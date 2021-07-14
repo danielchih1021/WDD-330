@@ -20,42 +20,22 @@ function displayFood(unsoldFoodArray){
     selection.innerHTML = "";
     let foodPost = "";
     unsoldFoodArray.forEach((fooditem)=>{
-        foodPost = foodPost + {fooditem.Title} + " \n" + 
-            ${fooditem.Category} + " \n" + 
-            ${fooditem.Description};
+        foodPost = foodPost + fooditem.Title + " \n" + 
+            fooditem.Category + " \n" + 
+            fooditem.Description;
         fooditem.Ingredient.forEach((ingredientItem) =>{
             let i = 1;
             foodPost = foodPost + "Ingredient #" + i + " " + ingredientItem.Name + " serving: " + ingredientItem.Serving + "\n";
             i++;
         })
         selection.innerHTML +=
-            `<div class="foodSelection" data-id="${fooditem.TimeId}">${foodPost}</div>`;
+            `<div class="foodSelection" data-id="${fooditem.TimeId}">
+                ${foodPost}<br>
+                <span>Purchase This</span>
+                <input type="checkbox" date-id="${fooditem.TimeId}" name = "purchase">
+            </div>`;
         foodPost = ""; 
     })
-    // foods.forEach((foodItem) => {
-    //     selection.innerHTML += 
-    //         `<div class="food">
-    //             ${foodItem.Title}<br>
-    //             ${foodItem.Category}<br>
-    //             ${foodItem.Description}<br>`;
-    //         foodItem.Ingredient.forEach((ingredientItem) => {
-    //             selection.innerHTML +=
-    //                 `${ingredientItem[0]}<br>
-    //                 ${ingredientItem[1]}<br>`;
-    //         })
-    //         `</div>`;
-        //         <input type = "button" value = "See top 5 nutritional value" name ="nutrition">
-        //         </div>` 
-        //      
-        // //         `
-        // //         `
-        // })
-        //     // ${foodItem.Ingredient}<br>
-        // selection.innerHTML += 
-        //     `<div>
-        //         ${foodItem.Description}<br>
-        //     </div>` 
-    // });
 }
 
 //Actions performed when clicking the sell your food button
