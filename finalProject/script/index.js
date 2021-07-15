@@ -73,7 +73,7 @@ document.querySelector("button").addEventListener("touchend", () => {
     title == "" ||
     description == "" ||
     typeof selectedCategory === "undefined" ||
-    ingredients === []
+    ingredients.length < 1
   ) {
     alert("Title, food category, ingredient and descriptions are required");
   } else {
@@ -153,10 +153,11 @@ function extractNutrientValue(targetedFood) {
 }
 
 function displayIngredient(ingredientList) {
+  let ingredientDiv = document.querySelector(".ingredient_div");
+  ingredientDiv.innerHTML = '';
+  
   ingredientList.forEach((ingredientUnit) => {
-    document.querySelector(
-      ".ingredient_div"
-    ).innerHTML += `<div data-id="${ingredientUnit.TimeId}">
+    ingredientDiv.innerHTML += `<div data-id="${ingredientUnit.TimeId}">
             <input type="text" value="${ingredientUnit.Name}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
             <input type="text" value="${ingredientUnit.Serving}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
             <input type="button" value="Update" class="ingredient_update_button" data-id="${ingredientUnit.TimeId}">
@@ -169,6 +170,7 @@ function displayIngredient(ingredientList) {
 document
   .querySelector("#ingredient_added_button")
   .addEventListener("touchend", () => {
+    console.log('Add button clicked');
     let added_ingredient = document.querySelector("#ingredient").value;
     let added_serving = document.querySelector("#serving").value;
     console.log(added_ingredient);
@@ -203,7 +205,8 @@ document
           ).value;
           ingredients[selected_index].Name = editedIngredient;
           let editedServing = document.querySelector(
-            `'input[value="${selectedIngredient_edit.Serving}"]'`
+            'input[value="${selectedIngredient_edit.Serving}"]'
+            //data-id instead
           ).value;
           ingredients[selected_index].Serving = editedServing;
           alert(
