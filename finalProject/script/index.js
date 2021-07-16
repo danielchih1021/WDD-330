@@ -8,10 +8,11 @@ let ingredients = [];
 if (localStorage.getItem("foodList")) {
   foods = JSON.parse(localStorage.getItem("foodList"));
   for (let i = 0; i < foods.length; i++) {
-    if ((foods[i].Sold = false)) {
+    if ((foods[i].Sold == false)) {
       unsoldFoods.push(foods[i]);
     }
   }
+  console.log(unsoldFoods);
   displayFood(unsoldFoods);
 }
 
@@ -20,8 +21,9 @@ function displayFood(unsoldFoodArray) {
   let selection = document.querySelector("section");
   selection.innerHTML = "";
   let foodPost = "";
+  let foodNumber = 0;
   unsoldFoodArray.forEach((fooditem) => {
-    let foodNumber = unsoldFoodArray.length;
+    foodNumber++;
     console.log(fooditem.Description);
     console.log(fooditem.Category);
     foodPost =
@@ -50,7 +52,7 @@ function displayFood(unsoldFoodArray) {
                 ${foodPost}<br>
                 <span>Purchase This</span>
                 <input type="checkbox" date-id="${fooditem.TimeId}" name = "purchase"><br>
-                <input type="button" data-id="${fooditem.TimeId}" name = "show_nutrients" value = "Show top three nutrients">
+                <input type="button" data-id="${fooditem.TimeId}" name = "show_nutrients" value = "Amount of protein contained">
             </div>`;
     foodPost = "";
   });
@@ -125,12 +127,13 @@ document.querySelector("button").addEventListener("touchend", () => {
         showNutrientButton.addEventListener("touchend", (e) => {
           let selectedId_nutrient = e.target.dataset.id;
           for (let i = 0; i < unsoldFoods.length; i++) {
+            //targetedFood_nutrient is the food we want to get the nutrient for
             let targetedFood_nutrient = unsoldFoods.find(
               (ingredient) =>
                 ingredient.TimeId === parseInt(selectedId_nutrient)
             );
             console.log(targetedFood_nutrient);
-            extractNutrientValue(targetedFood_nutrient);
+            displayNutrients(extractNutrientValue(targetedFood_nutrient));
           }
         });
       });
@@ -146,10 +149,20 @@ function extractNutrientValue(targetedFood) {
     pagesize: 5,
   };
 
+  targetedFood.Ingredient.forEach((eachIngredient)=>{
+    params.query = eachIngredient.Name;
+    console.log(params.query);
+  })
+
   const api_url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${params.query}&pageSize=${params.pagesize}&dataType=${params.dataType}&api_key=${params.api_key}`;
   fetch(api_url)
     .then((response) => response.json())
     .then((data) => console.log(data));
+
+}
+
+function displayNutrients(nutrientArrary){
+
 }
 
 function displayIngredient(ingredientList) {
@@ -158,8 +171,8 @@ function displayIngredient(ingredientList) {
   
   ingredientList.forEach((ingredientUnit) => {
     ingredientDiv.innerHTML += `<div data-id="${ingredientUnit.TimeId}">
-            <input type="text" value="${ingredientUnit.Name}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
-            <input type="text" value="${ingredientUnit.Serving}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
+            <input type="text" name = "ingredient_added" value="${ingredientUnit.Name}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
+            <input type="text" name = "serving_added" value="${ingredientUnit.Serving}" maxlength="6" size="6" data-id="${ingredientUnit.TimeId}">
             <input type="button" value="Update" class="ingredient_update_button" data-id="${ingredientUnit.TimeId}">
             <input type="button" value="Delete" class="ingredient_delete_button" data-id="${ingredientUnit.TimeId}"><br>
         </div>`;
@@ -186,7 +199,7 @@ document
       displayIngredient(ingredients);
     }
 
-    //Actions performed after hitting the edit ingredient button
+    //Actions performed after hitting the update ingredient button
     let edit_ingredient_buttons = document.querySelectorAll(
       ".ingredient_update_button"
     );
@@ -194,29 +207,32 @@ document
       edit_ingredient_button.addEventListener("touchend", (e) => {
         let seletedEditId = e.target.dataset.id;
         console.log(seletedEditId);
-        for (let i = 0; i < ingredients.length; i++) {
+        // for (let i = 0; i < ingredients.length; i++) {
           let selectedIngredient_edit = ingredients.find(
             (ingredient) => ingredient.TimeId === parseInt(seletedEditId)
           );
           console.log(selectedIngredient_edit);
           let selected_index = ingredients.indexOf(selectedIngredient_edit);
+          console.log(selected_index);
           let editedIngredient = document.querySelector(
-            `'input[value="${selectedIngredient_edit.Name}"]'`
-          ).value;
-          ingredients[selected_index].Name = editedIngredient;
-          let editedServing = document.querySelector(
-            'input[value="${selectedIngredient_edit.Serving}"]'
-            //data-id instead
-          ).value;
-          ingredients[selected_index].Serving = editedServing;
-          alert(
-            "Ingredient: " +
-              editedIngredient +
-              " and serving: " +
-              editedServing +
-              " have been updated"
+            `input[data-id="${seletedEditId}"][name="ingredient_added"]`
           );
-        }
+          ingredients[selected_index].Name = editedIngredient.value;
+          let editedServing = document.querySelector(
+            `input[data-id="${seletedEditId}"][name="serving_added"]`
+            //data-id instead
+          );
+          ingredients[selected_index].Serving = editedServing.value;
+          console.log(ingredients[selected_index]);
+        // }
+        alert(
+          "Ingredient: " +
+            editedIngredient.value +
+            " and serving: " +
+            editedServing.value +
+            " have been updated"
+        );
+        console.log(ingredients);
       });
     });
 
@@ -228,14 +244,27 @@ document
       delete_ingredient_button.addEventListener("touchend", (e) => {
         let selectedId = e.target.dataset.id;
         console.log(selectedId);
+        let selectedIngredient;
         for (let i = 0; i < ingredients.length; i++) {
-          let selectedIngredient = ingredients.find(
+          selectedIngredient = ingredients.find(
             (ingredient) => ingredient.TimeId === parseInt(selectedId)
           );
-          console.log(selectedIngredient);
-          ingredients.splice(selectedIngredient);
-          console.log(ingredients);
         }
+        console.log(selectedIngredient);
+        let selectedIndex = ingredients.indexOf(selectedIngredient);
+        console.log(selectedIndex);
+        ingredients.splice(selectedIndex,1);
+        console.log(ingredients);
+        deleteInputBoxes(selectedId);
       });
     });
   });
+
+function deleteInputBoxes(selectedTimeId){
+  let inputsToDelete = document.querySelectorAll(`[data-id="${selectedTimeId}"]`);
+  console.log(inputsToDelete);
+  inputsToDelete.forEach((inputToDelete) =>{
+    inputToDelete.remove();
+  });
+  alert("Ingredient has been deleted");
+}
