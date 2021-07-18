@@ -1,0 +1,14 @@
+body{
+    text-align: center;
+    background-color: tomato;
+}
+
+.foodSelection{
+    border: 2px solid blue;
+    margin-top: 2px;
+    background-color: white;
+}
+
+h3{
+    background-color: white;
+}
